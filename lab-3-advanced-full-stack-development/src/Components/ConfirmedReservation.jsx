@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 
-export function SavedReservation() {
+export function ConfirmedReservation() {
     return (
         <>
             <h1 className="main-font">Your reservation is confirmed</h1>

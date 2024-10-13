@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { createReservation } from '../Services/ReservationService';
-import { SavedReservation } from "./SavedReservation";
+import { createReservation, checkAvailableTables } from '../Services/ReservationService';
+import { ConfirmedReservation } from "./ConfirmedReservation";
+import { ChooseTable } from "./ChooseTable";
 
 export default function CreateReservation() {
 
@@ -10,26 +11,31 @@ export default function CreateReservation() {
     const [bookedDateTime, setBookedDateTime] = useState('');
     const [name, setName] = useState('');
     const [phoneNo, setPhoneNo] = useState('');
+    const [availableTables, setAvailableTables] = useState(null);
     const [serverResponse, setServerResponse] = useState('');
 
-    async function handleSubmit(e){
+    async function getAvailableTables(e){
         e.preventDefault();
-        const response = await createReservation(noOfCustomers, bookedDateTime, name, phoneNo);
+        const tableResponse = await checkAvailableTables(bookedDateTime, noOfCustomers);
+        setAvailableTables(tableResponse.data);
+        setServerResponse(tableResponse.status);
+    }
+
+    async function handleSubmit(tableId){
+        const response = await createReservation(noOfCustomers, bookedDateTime, name, phoneNo, tableId);
         setServerResponse(response);   
     }
     
-    if (serverResponse == 204) {
-        return (
-            <SavedReservation />
-        )
-    }
+    if (serverResponse == 204) { return <ConfirmedReservation /> } 
+
+    if (serverResponse == 200 && availableTables !== null) { return <ChooseTable availableTables={availableTables} sendToParent={handleSubmit}/> }
 
     return (
         <>
             <h1 className="main-font">Reserve table</h1>
 
             <div className="page-content-form">
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={getAvailableTables}>
                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                         <Form.Label>Number of customers</Form.Label>
                         <Form.Control 
@@ -63,7 +69,7 @@ export default function CreateReservation() {
                             required />
                     </Form.Group>
 
-                    <Button variant="primary" type="submit" className="btn-margin">Finish reservation</Button>
+                    <Button variant="primary" type="submit" className="btn-margin">Choose table</Button>
                 </Form>
             </div>
         </>
