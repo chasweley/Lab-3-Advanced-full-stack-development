@@ -72,6 +72,20 @@ ul {
   margin-bottom: 6rem;
 }
 
+.centre-margin-top {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.btn-link-color {
+  color: #FFFFFF;
+}
+
+.btn-center {
+  display: block;
+  margin: 4rem auto;
+}
+
 /*Container for all content on page*/
 .container {
   height: 100vh;

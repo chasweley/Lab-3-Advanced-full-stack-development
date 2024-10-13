@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import CreateReservation from "./Components/CreateReservation";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ReserveTable from "./Components/ReserveTable";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/reserve-table" element={<CreateReservation />} />
+          <Route path="/reserve-table" element={<ReserveTable />} />
         </Routes>
       </BrowserRouter>
     </>

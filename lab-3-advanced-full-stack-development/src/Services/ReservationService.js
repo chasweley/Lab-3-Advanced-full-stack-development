@@ -8,8 +8,9 @@ export async function createReservation(noOfCustomers, reservedDateTime, name, p
             bookedDateTime: new Date(reservedDateTime), 
             phoneNo, 
             name, 
-            tableId: parseInt(0) }
-        await axios.post(`${API_URI}`, booking);
+            tableId: null }
+        const response = await axios.post(`${API_URI}`, booking);
+        return response.status;
     } catch(error){
         console.log("Error making reservation: ", error);
     }
